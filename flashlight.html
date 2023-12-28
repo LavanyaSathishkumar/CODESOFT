@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashlight App</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #flashlight {
+            width: 100px;
+            height: 100px;
+            background-color: black;
+            border-radius: 50%;
+        }
+        #flashlight.on {
+            background-color: yellow;
+            box-shadow: 0 0 20px 10px yellow;
+        }
+    </style>
+</head>
+<body>
+    <div id="flashlight"></div>
+
+    <script>
+        var flashlight = document.getElementById('flashlight');
+
+        flashlight.addEventListener('click', function() {
+            flashlight.classList.toggle('on');
+        });
+    </script>
+</body>
+</html>

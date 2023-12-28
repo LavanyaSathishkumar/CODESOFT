@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #calculator {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+        #display {
+            grid-column: span 4;
+            text-align: right;
+            padding: 10px;
+            font-size: 1.5em;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <button onclick="appendNumber(7)">7</button>
+        <button onclick="appendNumber(8)">8</button>
+        <button onclick="appendNumber(9)">9</button>
+        <button onclick="setOperator('/')">/</button>
+
+        <button onclick="appendNumber(4)">4</button>
+        <button onclick="appendNumber(5)">5</button>
+        <button onclick="appendNumber(6)">6</button>
+        <button onclick="setOperator('*')">*</button>
+
+        <button onclick="appendNumber(1)">1</button>
+        <button onclick="appendNumber(2)">2</button>
+        <button onclick="appendNumber(3)">3</button>
+        <button onclick="setOperator('-')">-</button>
+
+        <button onclick="appendNumber(0)">0</button>
+        <button onclick="appendDecimal()">.</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="setOperator('+')">+</button>
+    </div>
+
+    <div id="display">0</div>
+
+    <script>
+        let currentInput = '0';
+        let storedNumber = null;
+        let selectedOperator = null;
+        let shouldResetInput = false;
+
+        function updateDisplay() {
+            document.getElementById('display').innerText = currentInput;
+        }
+
+        function appendNumber(number) {
+            if (shouldResetInput) {
+                currentInput = '' + number;
+                shouldResetInput = false;
+            } else {
+                currentInput = currentInput === '0' ? '' + number : currentInput + number;
+            }
+            updateDisplay();
+        }
+
+        function appendDecimal() {
+            if (!currentInput.includes('.')) {
+                currentInput += '.';
+                updateDisplay();
+            }
+        }
+
+        function setOperator(operator) {
+            if (storedNumber !== null) {
+                calculate();
+            }
+            storedNumber = parseFloat(currentInput);
+            selectedOperator = operator;
+            shouldResetInput = true;
+        }
+
+        function calculate() {
+            if (storedNumber === null || selectedOperator === null) {
+                return;
+            }
+
+            const currentNumber = parseFloat(currentInput);
+            let result;
+
+            switch (selectedOperator) {
+                case '+':
+                    result = storedNumber + currentNumber;
+                    break;
+                case '-':
+                    result = storedNumber - currentNumber;
+                    break;
+                case '*':
+                    result = storedNumber * currentNumber;
+                    break;
+                case '/':
+                    result = currentNumber !== 0 ? storedNumber / currentNumber : 'Error';
+                    break;
+            }
+
+            currentInput = result.toString();
+            storedNumber = null;
+            selectedOperator = null;
+            shouldResetInput = true;
+
+            updateDisplay();
+        }
+
+        function clearCalculator() {
+            currentInput = '0';
+            storedNumber = null;
+            selectedOperator = null;
+            shouldResetInput = false;
+
+            updateDisplay();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>
